@@ -1,0 +1,349 @@
+---
+fullname: Hydras & Co.
+shortname: hydra-battles
+organization: coq-community
+community: true
+action: true
+
+
+description: |-
+  This Coq-based project has three parts:
+  - An exploration of some properties of Kirby and Paris' hydra
+    battles, including the study of several representations of
+    ordinal numbers and a part of the so-called _Ketonen and Solovay
+    machinery_ (combinatorial properties of epsilon0).
+    This part also hosts the formalization by Russell O'Connor of
+    primitive recursive functions and Peano arithmetic (see the
+    [Goedel project](https://github.com/coq-community/goedel)).
+  - Some algorithms for computing _x^n_ with as few multiplications as
+    possible (using _addition chains_).
+  - A bridge to definitions and results in the
+    [Gaia project](https://github.com/coq-community/gaia), in particular
+    on ordinals.
+  Both the [documentation](https://coq-community.org/hydra-battles/doc/hydras.pdf)
+  and the Coq sources are _work continuously in progress_. For more information on
+  how the project is organized, maintained, and documented, see
+  [this paper](https://hal.archives-ouvertes.fr/hal-03404668), to appear
+  in the proceedings of [JFLA 2022](http://jfla.inria.fr/jfla2022.html).
+build: |-
+  ## Building and installation
+  - To get the required dependencies, you can use [opam](https://opam.ocaml.org)
+    or [Nix](https://nixos.org). With opam:
+    - `opam install ./coq-hydra-battles.opam --deps-only` to get the _hydra battles_ dependencies;
+    - `opam install ./coq-addition-chains.opam --deps-only` to get the _addition chains_ dependencies.
+    - `opam install ./coq-gaia-hydras.opam --deps-only` to get the _gaia hydras_ dependencies.
+    With Nix, just run `nix-shell` to get all the dependencies
+    (including for building the documentation). If you only want the
+    dependencies to build a sub-package, you can run one of:
+    - `nix-shell --argstr job hydra-battles`
+    - `nix-shell --argstr job addition-chains`
+    - `nix-shell --argstr job gaia-hydras`
+  - Building the PDF documentation also requires
+    [Alectryon](https://github.com/cpitclaudel/alectryon) 1.4
+    and [SerAPI](https://github.com/ejgallego/coq-serapi).
+    See [`doc/movies/Readme.md`](doc/movies/Readme.md) for details.
+  - The general Makefile is in the top directory:
+    - `make` : compilation of the Coq scripts
+    - `make pdf` : generation of PDF documentation as `doc/hydras.pdf`
+    - `make html` : generation of HTML documentation in `theories/html`
+  - You may also rely on `dune` to install just one part. Run:
+    - `dune build coq-hydra-battles.install` to build only the _hydra battles_ part
+    - `dune build coq-addition-chains.install` to build only the _addition chains_ part
+    - `dune build coq-gaia-hydras.install` to build only the _gaia hydras_ part
+  - Documentation for the `master` branch is continuously deployed at:
+    - https://coq-community.org/hydra-battles/doc/hydras.pdf
+    - https://coq-community.org/hydra-battles/theories/html/toc.html
+publications:
+- pub_url: https://hal.archives-ouvertes.fr/hal-03404668
+  pub_title: 'Hydras & Co.: Formalized mathematics in Coq for inspiration and entertainment'
+- pub_url: https://faculty.baruch.cuny.edu/lkirby/accessible_independence_results.pdf
+  pub_title: Accessible Independence Results for Peano Arithmetic
+  pub_doi: 10.1112/blms/14.4.285
+- pub_url: https://www.jstor.org/stable/2006985
+  pub_title: Rapidly Growing Ramsey Functions
+  pub_doi: 10.2307/2006985
+- pub_url: https://link.springer.com/book/10.1007/978-3-642-66473-1
+  pub_title: Proof Theory
+  pub_doi: 10.1007/978-3-642-66473-1
+
+license:
+  fullname: MIT License
+  identifier: MIT
+
+authors:
+- name: Yves Bertot
+- name: Pierre Castéran
+- name: Évelyne Contejean
+- name: Jeremy Damour
+- name: Russell O'Connor
+- name: Karl Palmskog
+- name: Clément Pit-Claudel
+- name: Théo Zimmermann
+
+maintainers:
+- name: Pierre Castéran
+  nickname: Casteran
+
+supported_coq_versions:
+  text: 8.13 or later
+  opam: '{(>= "8.13" & < "8.16~") | (= "dev")}'
+
+dependencies:
+- opam:
+    name: coq-equations
+    version: '{(>= "1.2" & < "1.4~") | (= "dev")}'
+  description: |-
+    [Equations](https://github.com/mattam82/Coq-Equations) 1.2 or later
+- opam:
+    name: coq-paramcoq
+    version: '{(>= "1.1.3" & < "1.2~") | (= "dev")}'
+  description: |-
+    [Paramcoq](https://github.com/coq-community/paramcoq) 1.1.3 or later
+- opam:
+    name: coq-mathcomp-ssreflect
+    version: '{(>= "1.12.0" & < "1.15~") | (= "dev")}'
+  description: |-
+    [MathComp SSReflect](https://github.com/math-comp/math-comp) 1.12 or later
+- opam:
+    name: coq-mathcomp-algebra
+  description: |-
+    [MathComp Algebra](https://github.com/math-comp/math-comp)
+- opam:
+    name: coq-gaia-schutte
+    version: '{(>= "1.14" & < "1.15~") | (= "dev")}'
+  description: |-
+    [Gaia's Schütte ordinals](https://github.com/coq-community/gaia) 1.14 or later
+- opam:
+    name: coq-mathcomp-zify
+  description: |-
+    [Mczify](https://github.com/math-comp/mczify)
+- opam:
+    name: coq-libhyps
+  description: |-
+    [LibHyps](https://github.com/Matafou/LibHyps)
+
+
+
+packages:
+  - fullname: Hydras & Co.
+    shortname: hydra-battles
+    dune: true
+    description: |-
+      An exploration of some properties of Kirby and Paris' hydra battles,
+      with the help of the Coq proof assistant. This includes the study of
+      several representations of ordinal numbers, and a part
+      of the so-called Ketonen and Solovay machinery (combinatorial
+      properties of epsilon0).
+    synopsis: Exploration of some properties of Kirby and Paris' hydra battles, with the help of Coq
+    opam-file-maintainer: palmskog@gmail.com
+    opam-file-version: dev
+    license_identifier: MIT
+    supported_coq_versions:
+      text: 8.13 or later
+      opam: '{(>= "8.13" & < "8.16~") | (= "dev")}'
+    tested_coq_opam_versions:
+      - version: 'dev-ocaml-4.13.1-flambda'
+      - version: '1.14.0-coq-8.15'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.13.0-coq-8.14'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.13.0-coq-8.13'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.12.0-coq-8.14'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.12.0-coq-8.13'
+        repo: 'mathcomp/mathcomp'
+    dependencies:
+      - opam:
+          name: coq-equations
+          version: '{(>= "1.2" & < "1.4~") | (= "dev")}'
+        description: |-
+          [Equations](https://github.com/mattam82/Coq-Equations) 1.2 or later
+      - opam:
+          name: coq-libhyps
+        description: |-
+          [LibHyps](https://github.com/Matafou/LibHyps)
+    namespace: hydras
+    keywords:
+      - name: Ketonen-Solovay machinery
+      - name: ordinals
+      - name: primitive recursive functions
+    categories:
+      - name: Mathematics/Combinatorics and Graph Theory
+      - name: Mathematics/Logic/Foundations
+    authors:
+    - name: Yves Bertot
+    - name: Pierre Castéran
+    - name: Évelyne Contejean
+    - name: Jeremy Damour
+    - name: Russell O'Connor
+    - name: Karl Palmskog
+    - name: Clément Pit-Claudel
+    - name: Théo Zimmermann
+
+
+
+  - fullname: Hydras & Co.
+    shortname: gaia-hydras
+    dune: true
+    description: |-
+      The Gaia and Hydra battles projects develop different implementations
+      of ordinals and other mathematical concepts in Coq. This development bridges
+      similar concepts in the two projects.
+    synopsis: Bridge in Coq between Gaia and Hydra battles
+    opam-file-maintainer: palmskog@gmail.com
+    opam-file-version: dev
+    license_identifier: MIT
+    supported_coq_versions:
+      text: 8.13 or later
+      opam: '{(>= "8.13" & < "8.16~") | (= "dev")}'
+    tested_coq_opam_versions:
+      - version: 'dev-ocaml-4.13.1-flambda'
+      - version: '1.14.0-coq-8.15'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.13.0-coq-8.14'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.13.0-coq-8.13'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.12.0-coq-8.14'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.12.0-coq-8.13'
+        repo: 'mathcomp/mathcomp'
+    dependencies:
+      - opam:
+          name: coq-hydra-battles
+          version: '{= version}'
+        description: |-
+          [Hydra-battles](https://github.com/coq-community/hydra-battles) dev
+      - opam:
+          name: coq-mathcomp-ssreflect
+          version: '{(>= "1.12.0" & < "1.15~") | (= "dev")}'
+        description: |-
+          [MathComp SSReflect](https://github.com/math-comp/math-comp) 1.12 or later
+      - opam:
+          name: coq-gaia-schutte
+          version: '{(>= "1.14" & < "1.15~") | (= "dev")}'
+        description: |-
+          [Gaia's Schütte ordinals](https://github.com/coq-community/gaia) 1.14 or later
+      - opam:
+          name: coq-mathcomp-zify
+        description: |-
+          [Mczify](https://github.com/math-comp/mczify)
+    namespace: gaia_hydras
+    keywords:
+      - name: ordinals
+    categories:
+      - name: Mathematics/Logic/Foundations
+    authors:
+    - name: Pierre Castéran
+
+  - fullname: Hydras & Co.
+    shortname: addition-chains
+    dune: true
+    description: |-
+      Addition chains are algorithms for computations of the p-th power of some x,
+      with the least number of multiplications possible. This development provides
+      a few implementations of addition chains in Coq, including proofs of their
+      correctness.
+    synopsis: Exponentiation algorithms following addition chains in Coq
+    opam-file-maintainer: palmskog@gmail.com
+    opam-file-version: dev
+    license_identifier: MIT
+    supported_coq_versions:
+      text: 8.13 or later
+      opam: '{(>= "8.13" & < "8.16~") | (= "dev")}'
+    tested_coq_opam_versions:
+      - version: 'dev-ocaml-4.13.1-flambda'
+      - version: '1.14.0-coq-8.15'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.13.0-coq-8.14'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.13.0-coq-8.13'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.12.0-coq-8.14'
+        repo: 'mathcomp/mathcomp'
+      - version: '1.12.0-coq-8.13'
+        repo: 'mathcomp/mathcomp'
+    dependencies:
+      - opam:
+          name: coq-paramcoq
+          version: '{(>= "1.1.3" & < "1.2~") | (= "dev")}'
+        description: |-
+          [Paramcoq](https://github.com/coq-community/paramcoq) 1.1.3 or later
+      - opam:
+          name: coq-mathcomp-ssreflect
+          version: '{(>= "1.12.0" & < "1.15~") | (= "dev")}'
+        description: |-
+          [MathComp SSReflect](https://github.com/math-comp/math-comp) 1.12 or later
+      - opam:
+          name: coq-mathcomp-algebra
+        description: |-
+          [MathComp Algebra](https://github.com/math-comp/math-comp)
+    namespace: additions
+    keywords:
+      - name: addition chains
+      - name: exponentiation algorithms
+    categories:
+      - name: Mathematics/Combinatorics and Graph Theory
+    authors:
+      - name: Pierre Castéran
+      - name: Yves Bertot
+
+
+
+
+
+
+
+
+documentation: |-
+  ## Contents
+  ### Coq sources (directory theories)
+  - theories/ordinals
+    - Hydra/*.v
+      - Representation in _Coq_ of hydras and hydra battles
+      - A proof of termination of all hydra battles (using ordinal numbers below epsilon0)
+      - A proof that no variant bounded by some ordinal less than epsilon0 can prove this termination
+      - Comparison of the length of some kind of Hydra battles with the Hardy hierarchy of fast growing functions
+
+    - OrdinalNotations/*.v
+      - Generic formalization on ordinal notations (well-founded ordered datatypes with a comparison function)
+    - Epsilon0/*.v
+      - Data types for representing ordinals less than epsilon0 in Cantor normal form
+      - The _Ketonen-Solovay machinery_: canonical sequences, accessibility, paths inside epsilon0
+      - Representation of some hierarchies of fast growing functions
+    - Schutte/*.v
+      - An axiomatization of countable ordinals, after Kurt Schütte. It is intended to be a reference for the data types considered in theories/Epsilon0.
+    - Gamma0/*.v
+      - A data type for ordinals below Gamma0 in Veblen normal form (**draft**).
+    - rpo/*.v
+      - A contribution on _recursive path orderings_ by Evelyne Contejean.
+    - Ackermann/*.v
+      - Primitive recursive functions, first-order logic, NN, and PA (from Goedel contrib)
+    - MoreAck/*.v
+       - Complements to the legacy **Ackermann** library
+    - Prelude/*.v
+      - Various auxiliary definitions and lemmas
+  - theories/additions/*.v
+    - Addition chains
+  - theories/gaia/*.v
+    - Bridge to the ordinals in Gaia that are encoded following Schütte and Ackermann
+  ### Exercises
+  - exercises/ordinals/*.v
+    - Exercises on ordinals
+  - exercises/primrec/*.v
+    - Exercises on primitive recursive functions
+  ## Contributions are welcome
+  Any suggestion for improving the Coq scripts and/or the documentation will be taken into account.
+  - In particular, we would be delighted to replace proofs with simpler ones, and/or to propose various proofs or definitions of the same concept, in order to illustrate different techniques and patterns. New tactics for automatizing the proofs are welcome too.
+  - Along the text, we propose several _projects_, the solution of which is planned to be integrated in the development.
+  - Please do not hesitate to send your remarks as GitHub issues and your suggestions of improvements (including solutions of "projects") as pull requests.
+  - Of course, new topics are welcome !
+  - If you wish to contribute without having to clone the project /
+    install the dependencies on your machine, you may use
+    [Gitpod](https://gitpod.io/#https://github.com/coq-community/hydra-battles/)
+    to get an editor and all the dependencies in your browser, with
+    support to open pull requests as well.
+  - __Contact__ : pierre dot casteran at gmail dot com
+  A bibliography is at the end of the documentation. Please feel free to suggest more references to us.
+---
