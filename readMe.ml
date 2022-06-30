@@ -187,13 +187,13 @@ let version =
   "- Compatible Coq versions: " ^ text
 
 let supported_coq_version = match find "supported_coq_versions" yaml with
-  | None -> "a"
+  | None -> ""
   | Some yaml_value -> match find "text" yaml_value with
     | Some value -> " - Compatible Coq versions: " ^ (Yaml.Util.to_string_exn value) ^ "\n\n"
     | None -> " - Compatible Coq versions:  Not available information \n\n"
 
 let supported_ocaml_version = match find "supported_ocaml_versions" yaml with
-  | None -> "b"
+  | None -> ""
   | Some yaml_value -> match find "text" yaml_value with
     | Some value -> " - Compatible OCaml versions: " ^ (Yaml.Util.to_string_exn value) ^ "\n\n"
     | None -> " - Compatible OCaml versions:  Not available information \n\n"
