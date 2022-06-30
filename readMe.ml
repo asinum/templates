@@ -155,7 +155,7 @@ let maintainer =
       | Some yaml_value -> Yaml.Util.to_string_exn yaml_value
       | None -> "Missing nickname"
     in
-    name ^ " [**@" ^ nickname ^ "**](https://github.com/" ^ nickname ^ ")\n"
+    name ^ " ([**@" ^ nickname ^ "**](https://github.com/" ^ nickname ^ "))\n"
   in
   aux f maintainers "- Coq-community maintainer(s) : \n"
 
@@ -186,24 +186,27 @@ let version =
   in
   "- Compatible Coq versions: " ^ text
 
-let supported_coq_version = match find "supported_coq_version" yaml with
-  | None -> ""
+let supported_coq_version = match find "supported_coq_versions" yaml with
+  | None -> "a"
   | Some yaml_value -> match find "text" yaml_value with
     | Some value -> " - Compatible Coq versions: " ^ (Yaml.Util.to_string_exn value) ^ "\n\n"
     | None -> " - Compatible Coq versions:  Not available information \n\n"
 
-let supported_ocaml_version = match find "supported_ocaml_version" yaml with
-  | None -> ""
+let supported_ocaml_version = match find "supported_ocaml_versions" yaml with
+  | None -> "b"
   | Some yaml_value -> match find "text" yaml_value with
     | Some value -> " - Compatible OCaml versions: " ^ (Yaml.Util.to_string_exn value) ^ "\n\n"
     | None -> " - Compatible OCaml versions:  Not available information \n\n"
 
 let dependency =
   let dependencies = find_list "dependencies" yaml in
-  let f value = match find "description" value with
-    | Some yaml_value -> " -" ^ Yaml.Util.to_string_exn yaml_value
-    | None ->  "No description available"
-  in aux f dependencies " - Additional dependencies:"
+  match dependencies with
+  | [] -> " - Additional dependencies: 'None' "
+  | _ ->
+      let f value = match find "description" value with
+        | Some yaml_value -> " -" ^ Yaml.Util.to_string_exn yaml_value
+        | None ->  "No description available"
+      in aux f dependencies " - Additional dependencies:"
 
 
 let namespace =
@@ -247,7 +250,20 @@ let meta = " ## Meta \n\n" ^ author ^ "\n" ^ maintainer ^ license ^ supported_co
 let build =
   match find "build" yaml with
   | Some yaml_value -> Yaml.Util.to_string_exn  yaml_value
-  | None -> "Missing build instruction"
+  | None ->
+      let opam_name = match find "opan_name" yaml with
+        | Some value -> Yaml.Util.to_string_exn value
+        | None -> "coq-"^shortname
+      in
+      let automatic = "## Building and installation instructions \n\n" ^ "The easiest way to install the latest released version of " ^ fullname ^ " is via [OPAM](https://opam.ocaml.org/doc/Install.html):\n" ^ "```shell \nopam repo add coq-released https://coq.inria.fr/ \nopam install " ^ opam_name ^ " \n```" in
+      let make_target = "" in
+      let manual = "\n\nTo instead build and install manually, do:\n``` shell \n git clone "^ "https://github.com/" ^ organization ^ "/" ^ shortname ^ ".git \ncd " ^ shortname in
+      let dune = if get_bool "dune" yaml
+        then "dune build \ndune install"
+        else
+          "make {" ^ make_target ^ " # or make -j <number-of-cores-on-your-machine> " ^ make_target ^ "\nmake install \n```"
+      in
+      automatic ^ manual ^ "\n" ^ dune ^ "\n\n"
 
 
 (* Documentation *)
